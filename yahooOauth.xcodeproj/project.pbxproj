@@ -1,0 +1,283 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		45F09A691407894B00EB0609 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F09A681407894B00EB0609 /* UIKit.framework */; };
+		45F09A6B1407894B00EB0609 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F09A6A1407894B00EB0609 /* Foundation.framework */; };
+		45F09A6D1407894B00EB0609 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45F09A6C1407894B00EB0609 /* CoreGraphics.framework */; };
+		45F09A731407894B00EB0609 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 45F09A711407894B00EB0609 /* InfoPlist.strings */; };
+		45F09A761407894B00EB0609 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F09A751407894B00EB0609 /* main.m */; };
+		45F09A791407894B00EB0609 /* yahooOauthAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F09A781407894B00EB0609 /* yahooOauthAppDelegate.m */; };
+		45F09A7C1407894C00EB0609 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45F09A7A1407894C00EB0609 /* MainWindow.xib */; };
+		45F09A7F1407894C00EB0609 /* yahooOauthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F09A7E1407894C00EB0609 /* yahooOauthViewController.m */; };
+		45F09A821407894C00EB0609 /* yahooOauthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45F09A801407894C00EB0609 /* yahooOauthViewController.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		45F09A641407894B00EB0609 /* yahooOauth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = yahooOauth.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		45F09A681407894B00EB0609 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		45F09A6A1407894B00EB0609 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		45F09A6C1407894B00EB0609 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		45F09A701407894B00EB0609 /* yahooOauth-Info.plist */ = {isa = PBXFileReference; path = "yahooOauth-Info.plist"; sourceTree = "<group>"; };
+		45F09A721407894B00EB0609 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		45F09A741407894B00EB0609 /* yahooOauth-Prefix.pch */ = {isa = PBXFileReference; path = "yahooOauth-Prefix.pch"; sourceTree = "<group>"; };
+		45F09A751407894B00EB0609 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		45F09A771407894B00EB0609 /* yahooOauthAppDelegate.h */ = {isa = PBXFileReference; path = yahooOauthAppDelegate.h; sourceTree = "<group>"; };
+		45F09A781407894B00EB0609 /* yahooOauthAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = yahooOauthAppDelegate.m; sourceTree = "<group>"; };
+		45F09A7B1407894C00EB0609 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		45F09A7D1407894C00EB0609 /* yahooOauthViewController.h */ = {isa = PBXFileReference; path = yahooOauthViewController.h; sourceTree = "<group>"; };
+		45F09A7E1407894C00EB0609 /* yahooOauthViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = yahooOauthViewController.m; sourceTree = "<group>"; };
+		45F09A811407894C00EB0609 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/yahooOauthViewController.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		45F09A611407894B00EB0609 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45F09A691407894B00EB0609 /* UIKit.framework in Frameworks */,
+				45F09A6B1407894B00EB0609 /* Foundation.framework in Frameworks */,
+				45F09A6D1407894B00EB0609 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		45F09A591407894B00EB0609 = {
+			isa = PBXGroup;
+			children = (
+				45F09A6E1407894B00EB0609 /* yahooOauth */,
+				45F09A671407894B00EB0609 /* Frameworks */,
+				45F09A651407894B00EB0609 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		45F09A651407894B00EB0609 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				45F09A641407894B00EB0609 /* yahooOauth.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		45F09A671407894B00EB0609 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				45F09A681407894B00EB0609 /* UIKit.framework */,
+				45F09A6A1407894B00EB0609 /* Foundation.framework */,
+				45F09A6C1407894B00EB0609 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		45F09A6E1407894B00EB0609 /* yahooOauth */ = {
+			isa = PBXGroup;
+			children = (
+				45F09A771407894B00EB0609 /* yahooOauthAppDelegate.h */,
+				45F09A781407894B00EB0609 /* yahooOauthAppDelegate.m */,
+				45F09A7A1407894C00EB0609 /* MainWindow.xib */,
+				45F09A7D1407894C00EB0609 /* yahooOauthViewController.h */,
+				45F09A7E1407894C00EB0609 /* yahooOauthViewController.m */,
+				45F09A801407894C00EB0609 /* yahooOauthViewController.xib */,
+				45F09A6F1407894B00EB0609 /* Supporting Files */,
+			);
+			path = yahooOauth;
+			sourceTree = "<group>";
+		};
+		45F09A6F1407894B00EB0609 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				45F09A701407894B00EB0609 /* yahooOauth-Info.plist */,
+				45F09A711407894B00EB0609 /* InfoPlist.strings */,
+				45F09A741407894B00EB0609 /* yahooOauth-Prefix.pch */,
+				45F09A751407894B00EB0609 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		45F09A631407894B00EB0609 /* yahooOauth */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 45F09A851407894C00EB0609 /* Build configuration list for PBXNativeTarget "yahooOauth" */;
+			buildPhases = (
+				45F09A601407894B00EB0609 /* Sources */,
+				45F09A611407894B00EB0609 /* Frameworks */,
+				45F09A621407894B00EB0609 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = yahooOauth;
+			productName = yahooOauth;
+			productReference = 45F09A641407894B00EB0609 /* yahooOauth.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		45F09A5B1407894B00EB0609 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 45F09A5E1407894B00EB0609 /* Build configuration list for PBXProject "yahooOauth" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 45F09A591407894B00EB0609;
+			productRefGroup = 45F09A651407894B00EB0609 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				45F09A631407894B00EB0609 /* yahooOauth */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		45F09A621407894B00EB0609 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45F09A731407894B00EB0609 /* InfoPlist.strings in Resources */,
+				45F09A7C1407894C00EB0609 /* MainWindow.xib in Resources */,
+				45F09A821407894C00EB0609 /* yahooOauthViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		45F09A601407894B00EB0609 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45F09A761407894B00EB0609 /* main.m in Sources */,
+				45F09A791407894B00EB0609 /* yahooOauthAppDelegate.m in Sources */,
+				45F09A7F1407894C00EB0609 /* yahooOauthViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		45F09A711407894B00EB0609 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				45F09A721407894B00EB0609 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		45F09A7A1407894C00EB0609 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				45F09A7B1407894C00EB0609 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		45F09A801407894C00EB0609 /* yahooOauthViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				45F09A811407894C00EB0609 /* en */,
+			);
+			name = yahooOauthViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		45F09A831407894C00EB0609 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		45F09A841407894C00EB0609 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		45F09A861407894C00EB0609 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "yahooOauth/yahooOauth-Prefix.pch";
+				INFOPLIST_FILE = "yahooOauth/yahooOauth-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		45F09A871407894C00EB0609 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "yahooOauth/yahooOauth-Prefix.pch";
+				INFOPLIST_FILE = "yahooOauth/yahooOauth-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		45F09A5E1407894B00EB0609 /* Build configuration list for PBXProject "yahooOauth" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45F09A831407894C00EB0609 /* Debug */,
+				45F09A841407894C00EB0609 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		45F09A851407894C00EB0609 /* Build configuration list for PBXNativeTarget "yahooOauth" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45F09A861407894C00EB0609 /* Debug */,
+				45F09A871407894C00EB0609 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 45F09A5B1407894B00EB0609 /* Project object */;
+}
