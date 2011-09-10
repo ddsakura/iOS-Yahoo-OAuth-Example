@@ -27,7 +27,7 @@ static const NSString *urlGetToken = @"https://api.login.yahoo.com/oauth/v2/get_
 @implementation YahooApi
 
 @synthesize delegate;
-@synthesize apiUrl, apiParameter;
+@synthesize apiUrl, apiParameter, onlyGetToken;
 
 - (NSString *)oauthGeneratePlaintextSignatureFor:(NSString *)baseString
                                 withClientSecret:(NSString *)clientSecret
@@ -80,6 +80,10 @@ static const NSString *urlGetToken = @"https://api.login.yahoo.com/oauth/v2/get_
             NSString *timeinNSString = [NSString stringWithFormat:@"%.0f", todaysDate];
             NSLog(@"timeStamp: %@", timeinNSString);
             
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:timeinNSString forKey:@"timeStamp"];
+            [defaults synchronize];
+            
             NSString* escapedUrlString = [NSString stringWithFormat:@"%@&", oauth_consumer_secret];
             
             NSLog(@"escapedUrlString: %@", escapedUrlString);
@@ -110,18 +114,16 @@ static const NSString *urlGetToken = @"https://api.login.yahoo.com/oauth/v2/get_
         if (response != NULL) {
             NSString *regEx = @"\\boauth_token=([a-zA-Z0-9%_.+\\-]+)&\\b";
             NSString *oauthTokenSecretReg = @"\\boauth_token_secret=([a-zA-Z0-9%_.+\\-]+)&\\b";
+            NSString *oauthSessionHandleReg = @"\\boauth_session_handle=([a-zA-Z0-9%_.+\\-]+)&\\b";
+            //oauth_token
             NSString *match = [response stringByMatching:regEx];
+            //oauth_token_secret
             NSString *match2 = [response stringByMatching:oauthTokenSecretReg];
-            NSLog(@"%@", match);
+            //oauth_session_handle
+            NSString *match3 = [response stringByMatching:oauthSessionHandleReg];
+            NSLog(@"oauthSessionHandleReg: %@", match3);
+            
             if ([match isEqual:@""] == NO) {
-                
-                NSTimeInterval  todaysDate = [[NSDate date] timeIntervalSince1970];
-                NSString *timeinNSString = [NSString stringWithFormat:@"%.0f", todaysDate];
-                NSLog(@"timeStamp: %@", timeinNSString);
-                
-                NSString* escapedUrlString = [NSString stringWithFormat:@"%@&", oauth_consumer_secret];
-                
-                NSLog(@"escapedUrlString: %@", escapedUrlString);
                 
                 NSString *oauthToken = [match stringByReplacingOccurrencesOfRegex:@"oauth_token=" withString:@""];
                 oauthToken = [oauthToken stringByReplacingOccurrencesOfRegex:@"&" withString:@""];
@@ -131,82 +133,20 @@ static const NSString *urlGetToken = @"https://api.login.yahoo.com/oauth/v2/get_
                 oauthSecrect = [oauthSecrect stringByReplacingOccurrencesOfRegex:@"&" withString:@""];
                 NSLog(@"oauthSecrect: %@", oauthSecrect);
                 
+                NSString *oauthSessionHandle = [match3 stringByReplacingOccurrencesOfRegex:@"oauth_session_handle=" withString:@""];
+                oauthSessionHandle = [oauthSessionHandle stringByReplacingOccurrencesOfRegex:@"&" withString:@""];
+                NSLog(@"oauthSessionHandle: %@", oauthSessionHandle);
                 
-                NSString *baseUrl = self.apiUrl;
-                
-                NSMutableDictionary *parameterDic = [NSMutableDictionary dictionaryWithObjects:
-                                                       [NSArray arrayWithObjects:@"json", [NSString stringWithFormat:@"%@", oauth_consumer_key], timeinNSString, @"HMAC-SHA1", timeinNSString, oauthToken, @"1.0", nil]
-                                                                         forKeys:
-                                                       [NSArray arrayWithObjects:@"format", @"oauth_consumer_key", @"oauth_nonce", @"oauth_signature_method", @"oauth_timestamp", @"oauth_token", @"oauth_version", nil]];
-                
-                
-                NSString *searchString = self.apiParameter;
-                NSString *regexString  = @"((\\w+)\\=(\\w+))";
-                NSString *regexSpiltString  = @"\\=";
-                NSArray  *matchArray   = NULL;
-                
-                matchArray = [searchString componentsMatchedByRegex:regexString];
-                NSLog(@"matchArray: %@", matchArray);
-                
-                for (NSString* pairPara in matchArray) {
-                    NSArray  *splitArray   = NULL;
-                    splitArray = [pairPara componentsSeparatedByRegex:regexSpiltString];
-                    NSLog(@"splitArray: %@", splitArray);
-                    [parameterDic setObject:[splitArray objectAtIndex:1] forKey:[splitArray objectAtIndex:0]];
-                    
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setObject:oauthToken forKey:@"oauth_token"];
+                [defaults setObject:oauthSecrect forKey:@"oauth_token_secret"];
+                [defaults setObject:oauthSessionHandle forKey:@"oauth_session_handle"];
+                [defaults synchronize];
+
+                if ([onlyGetToken isEqualToString:@"FALSE"]) {
+                    [self requestApiWithOauthToken:oauthToken withOauthTokenSecret:oauthSecrect];
                 }
-                
-               
-                
-                NSArray *myKeys = [parameterDic allKeys];
-                NSArray *sortedKeys = [myKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-                
-                NSString *parameters = @"";
-                
-                for (int k=0; k < [myKeys count]; k++) {
-                    parameters = [NSString stringWithFormat:@"%@%@=%@", [parameters isEqualToString:@""]?[NSString stringWithFormat:@""]:[NSString stringWithFormat:@"%@&", parameters] , [sortedKeys objectAtIndex:k],[parameterDic objectForKey: [sortedKeys objectAtIndex:k]]];
-                }
-                
-                NSLog(@"kkkk: %@", parameters);
-                
-                NSString *parameter = [NSString stringWithFormat:@"%@&format=json&oauth_consumer_key=%@&oauth_nonce=%@&oauth_signature_method=HMAC-SHA1&oauth_timestamp=%@&oauth_token=%@&oauth_version=1.0", self.apiParameter, [NSString stringWithFormat:@"%@", oauth_consumer_key], timeinNSString, timeinNSString, oauthToken];
-                
-                
-                NSString *urlencodebaseUrl = [baseUrl encodeForURL];
-                
-                NSString *urlencodeParameter = [parameters encodeForURL];
-                
-                NSString *baseData = [NSString stringWithFormat:@"GET&%@&%@", urlencodebaseUrl, urlencodeParameter];
-                NSString *encodeBaseData = [[self oauthGenerateHMAC_SHA1SignatureFor:baseData withClientSecret:[NSString stringWithFormat:@"%@", oauth_consumer_secret] andTokenSecret:oauthSecrect] encodeForURL];
-                
-                
-                NSLog(@"baseUrl: GET&%@", baseUrl);
-                NSLog(@"baseData: %@", baseData);
-                NSLog(@"encodeBaseData: %@", encodeBaseData);
-                
-                
-                //NSURL *url = [NSURL URLWithString:@"http://wretch.yahooapis.com/v1.2/siteAlbumCategories?format=json"];
-                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?format=json&%@", baseUrl, self.apiParameter]];
-                ASIHTTPRequest *apiRequest = [ASIHTTPRequest requestWithURL:url];
-                apiRequest.userInfo = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"accessApi", @"type", nil];
-                
-                NSString *oauthValue = [NSString stringWithFormat:@"OAuth realm=\"yahooapis.com\", oauth_consumer_key=\"%@\", oauth_nonce=\"%@\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"%@\", oauth_token=\"%@\", oauth_version=\"1.0\", oauth_signature=\"%@\"", [NSString stringWithFormat:@"%@", oauth_consumer_key], timeinNSString, timeinNSString, oauthToken, encodeBaseData];
-                
-                NSLog(@"%@", oauthValue);
-                
-                [apiRequest addRequestHeader:@"Authorization" value:oauthValue];
-                [apiRequest setDelegate:self];
-                [apiRequest startAsynchronous];
-                /*NSError *error = [apiRequest error];
-                if (!error) {
-                    NSString *response = [apiRequest responseString];
-                    NSLog(@"%@", response);
-                }
-                else
-                {
-                    NSLog(@"%@", [error description]);
-                }*/
-                
+
             }
         }
         else
@@ -239,21 +179,183 @@ static const NSString *urlGetToken = @"https://api.login.yahoo.com/oauth/v2/get_
 
 }
 
+- (void)requestApiWithOauthToken:(NSString *)oauthToken withOauthTokenSecret:(NSString*)oauthTokenSecret
+{
+    NSTimeInterval  todaysDate = [[NSDate date] timeIntervalSince1970];
+    NSString *timeinNSString = [NSString stringWithFormat:@"%.0f", todaysDate];
+    NSLog(@"timeStamp: %@", timeinNSString);
+    
+    NSString* escapedUrlString = [NSString stringWithFormat:@"%@&", oauth_consumer_secret];
+    
+    NSLog(@"escapedUrlString: %@", escapedUrlString);
+    
+
+    NSString *baseUrl = self.apiUrl;
+    
+    NSMutableDictionary *parameterDic = [NSMutableDictionary dictionaryWithObjects:
+                                         [NSArray arrayWithObjects:@"json", [NSString stringWithFormat:@"%@", oauth_consumer_key], timeinNSString, @"HMAC-SHA1", timeinNSString, oauthToken, @"1.0", nil]
+                                                                           forKeys:
+                                         [NSArray arrayWithObjects:@"format", @"oauth_consumer_key", @"oauth_nonce", @"oauth_signature_method", @"oauth_timestamp", @"oauth_token", @"oauth_version", nil]];
+    
+    
+    NSString *searchString = self.apiParameter;
+    NSString *regexString  = @"((\\w+)\\=(\\w+))";
+    NSString *regexSpiltString  = @"\\=";
+    NSArray  *matchArray   = NULL;
+    
+    matchArray = [searchString componentsMatchedByRegex:regexString];
+    NSLog(@"matchArray: %@", matchArray);
+    
+    for (NSString* pairPara in matchArray) {
+        NSArray  *splitArray   = NULL;
+        splitArray = [pairPara componentsSeparatedByRegex:regexSpiltString];
+        NSLog(@"splitArray: %@", splitArray);
+        [parameterDic setObject:[splitArray objectAtIndex:1] forKey:[splitArray objectAtIndex:0]];
+        
+    }
+    
+    
+    
+    NSArray *myKeys = [parameterDic allKeys];
+    NSArray *sortedKeys = [myKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    
+    NSString *parameters = @"";
+    
+    for (int k=0; k < [myKeys count]; k++) {
+        parameters = [NSString stringWithFormat:@"%@%@=%@", [parameters isEqualToString:@""]?[NSString stringWithFormat:@""]:[NSString stringWithFormat:@"%@&", parameters] , [sortedKeys objectAtIndex:k],[parameterDic objectForKey: [sortedKeys objectAtIndex:k]]];
+    }
+    
+    NSLog(@"parameters: %@", parameters);
+    
+    
+    NSString *urlencodebaseUrl = [baseUrl encodeForURL];
+    
+    NSString *urlencodeParameter = [parameters encodeForURL];
+    
+    NSString *baseData = [NSString stringWithFormat:@"GET&%@&%@", urlencodebaseUrl, urlencodeParameter];
+    NSString *encodeBaseData = [[self oauthGenerateHMAC_SHA1SignatureFor:baseData withClientSecret:[NSString stringWithFormat:@"%@", oauth_consumer_secret] andTokenSecret:oauthTokenSecret] encodeForURL];
+    
+    
+    NSLog(@"baseUrl: GET&%@", baseUrl);
+    NSLog(@"baseData: %@", baseData);
+    NSLog(@"encodeBaseData: %@", encodeBaseData);
+    
+    
+    //NSURL *url = [NSURL URLWithString:@"http://wretch.yahooapis.com/v1.2/siteAlbumCategories?format=json"];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?format=json&%@", baseUrl, self.apiParameter]];
+    ASIHTTPRequest *apiRequest = [ASIHTTPRequest requestWithURL:url];
+    apiRequest.userInfo = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"accessApi", @"type", nil];
+    
+    NSString *oauthValue = [NSString stringWithFormat:@"OAuth realm=\"yahooapis.com\", oauth_consumer_key=\"%@\", oauth_nonce=\"%@\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"%@\", oauth_token=\"%@\", oauth_version=\"1.0\", oauth_signature=\"%@\"", [NSString stringWithFormat:@"%@", oauth_consumer_key], timeinNSString, timeinNSString, oauthToken, encodeBaseData];
+    
+    NSLog(@"%@", oauthValue);
+    
+    [apiRequest addRequestHeader:@"Authorization" value:oauthValue];
+    [apiRequest setDelegate:self];
+    [apiRequest startAsynchronous];
+}
+
+
+- (void)refreshToken:(NSString *)oauthToken withOauthTokenSecret:(NSString*)oauthTokenSecret withOauthSessionHandle:(NSString*)oauthSessionHandle
+{
+    NSTimeInterval  todaysDate = [[NSDate date] timeIntervalSince1970];
+    NSString *timeinNSString = [NSString stringWithFormat:@"%.0f", todaysDate];
+    NSLog(@"timeStamp: %@", timeinNSString);
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:timeinNSString forKey:@"timeStamp"];
+    [defaults synchronize];
+    
+    NSString* escapedUrlString = [NSString stringWithFormat:@"%@&%@", oauth_consumer_secret, oauthTokenSecret];
+    
+    NSLog(@"escapedUrlString: %@", escapedUrlString);
+    
+    //
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", urlGetToken]];
+    ASIFormDataRequest *getTokenRequest = [ASIFormDataRequest requestWithURL:url];
+    getTokenRequest.userInfo = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"getToken", @"type", nil];
+    [getTokenRequest setPostValue:[NSString stringWithFormat:@"%@", oauth_consumer_key] forKey:@"oauth_consumer_key"];
+    [getTokenRequest setPostValue:oauthToken forKey:@"oauth_token"];
+    [getTokenRequest setPostValue:@"plaintext" forKey:@"oauth_signature_method"];
+    [getTokenRequest setPostValue:escapedUrlString forKey:@"oauth_signature"];
+    [getTokenRequest setPostValue:oauthSessionHandle forKey:@"oauth_session_handle"];
+    [getTokenRequest setPostValue:timeinNSString forKey:@"oauth_timestamp"];
+    [getTokenRequest setPostValue:@"abcde" forKey:@"oauth_nonce"];
+    [getTokenRequest setPostValue:@"1.0" forKey:@"oauth_version"];
+    
+    NSLog(@"curl -d 'oauth_consumer_key=%@&oauth_token=%@&oauth_signature_method=plaintext&oauth_signature=%@&oauth_session_handle=%@&oauth_timestamp=%@&oauth_nonce=abcde&oauth_version=1.0' https://api.login.yahoo.com/oauth/v2/get_token", [NSString stringWithFormat:@"%@", oauth_consumer_key],oauthToken,escapedUrlString,oauthSessionHandle, timeinNSString);
+    
+    [getTokenRequest setDelegate:self];
+    [getTokenRequest startSynchronous];
+    NSError *error = [getTokenRequest error];
+    if (!error) {
+        NSString *response = [getTokenRequest responseString];
+        NSLog(@"%@", response);
+    }
+    else
+    {
+        NSLog(@"%@", [error description]);
+    }
+}
+
+- (id)initOnlyGetToken
+{
+    self = [self init];
+    if (self) {
+        [self setOnlyGetToken:@"TRUE"];
+    }
+    
+	return self;
+}
+
 - (id)initWithApiUrl:(NSString*)theApiUrl withParameters:(NSString*)theApiParameter
 {
 	self = [self init];
     if (self) {
         [self setApiUrl:theApiUrl];
         [self setApiParameter:theApiParameter];
+        [self setOnlyGetToken:@"FALSE"];
     }
     
 	return self;
 }
 
+- (BOOL)isTokenValid
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL isTokenValid = FALSE;
+    
+    if (![defaults objectForKey:@"oauth_session_handle"]) {
+        isTokenValid = FALSE;
+    }
+    else {
+        
+        NSLog(@"%@", [defaults objectForKey:@"timeStamp"] );
+        
+        double oauth_timestamp = [[defaults objectForKey:@"timeStamp"] doubleValue];
+        
+        NSTimeInterval todaysDate = [[NSDate date] timeIntervalSince1970];
+        NSLog(@"%f - %f", todaysDate, oauth_timestamp);
+        if ((todaysDate - oauth_timestamp) > 3500)
+        {
+            isTokenValid = FALSE;
+        }
+        else
+        {
+            isTokenValid = TRUE;
+        }
+    }
+    
+    return isTokenValid;
+}
+
 -(void)startRequest
 {
+    NSLog(@"%@", onlyGetToken);
+    
     [[self delegate] apiRequestStart];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
     if (![defaults objectForKey:@"oauth_token"]) {
         //Call init get access token
         NSLog(@"Call init get access token");
@@ -261,18 +363,33 @@ static const NSString *urlGetToken = @"https://api.login.yahoo.com/oauth/v2/get_
     }
     else {
         
-        //Call Refresh access token
-        NSLog(@"Call Refresh access token");
-        /*NSString *oauth_token = [defaults objectForKey:@"oauth_token"];
-         NSString *oauth_token_secret = [defaults objectForKey:@"oauth_token_secret"];
-         NSString *oauth_session_handle = [defaults objectForKey:@"oauth_session_handle"];*/
+        NSLog(@"%@", [defaults objectForKey:@"timeStamp"] );
+        
+        double oauth_timestamp = [[defaults objectForKey:@"timeStamp"] doubleValue];
+        
+        NSTimeInterval todaysDate = [[NSDate date] timeIntervalSince1970];
+        NSLog(@"%f - %f", todaysDate, oauth_timestamp);
+        if ((todaysDate - oauth_timestamp) > 3500)
+        {
+            //Call Refresh access token
+            NSLog(@"Call Refresh access token");
+            //TODO: Refresh access token
+            NSString *oauth_token = [defaults objectForKey:@"oauth_token"];
+            NSString *oauth_token_secret = [defaults objectForKey:@"oauth_token_secret"];
+            NSString *oauth_session_handle = [defaults objectForKey:@"oauth_session_handle"];
+            [self refreshToken:oauth_token withOauthTokenSecret:oauth_token_secret withOauthSessionHandle:oauth_session_handle];
+        }
+        else
+        {
+            NSLog(@"oauth_token still valid.");
+            NSString *oauth_token = [defaults objectForKey:@"oauth_token"];
+            NSString *oauth_token_secret = [defaults objectForKey:@"oauth_token_secret"];
+            
+            if ([onlyGetToken isEqualToString:@"FALSE"]) {
+                [self requestApiWithOauthToken:oauth_token withOauthTokenSecret:oauth_token_secret];
+            }
+        }
     }
-    
-    /*
-     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-     [defaults setObject:@"" forKey:@"FBAccessTokenKey"];
-     [defaults setObject:@"" forKey:@"FBExpirationDateKey"];
-     [defaults synchronize];*/
 }
 
 
