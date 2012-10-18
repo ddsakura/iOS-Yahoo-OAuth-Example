@@ -2,8 +2,7 @@
 //  yahooOauthAppDelegate.m
 //  yahooOauth
 //
-//  Created by Eric (yu-wei) Chuang on 2011/8/26.
-//  Copyright 2011年 __MyCompanyName__. All rights reserved.
+//  Created by ddsakura on 2011/8/26.
 //
 
 #import "yahooOauthAppDelegate.h"

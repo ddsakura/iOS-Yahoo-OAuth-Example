@@ -2,14 +2,16 @@
 //  yahooOauthViewController.h
 //  yahooOauth
 //
-//  Created by Eric (yu-wei) Chuang on 2011/8/26.
-//  Copyright 2011年 __MyCompanyName__. All rights reserved.
+//  Created by ddsakura on 2011/8/26.
 //
 
 #import <UIKit/UIKit.h>
+#import "YahooApi.h"
 
-@interface yahooOauthViewController : UIViewController {
-    
+@interface yahooOauthViewController : UIViewController<YahooApiDelegate> {
+    YahooApi *apiRequest;
 }
+
+//@property (nonatomic, retain) NSString *apiUrl;
 
 @end

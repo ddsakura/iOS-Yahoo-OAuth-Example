@@ -15,11 +15,11 @@
 #import "JSON.h"
 
 
-static const NSString *oauth_consumer_key = @"dj0yJmk9MXVqNFVWZFdHa1JuJmQ9WVdrOU1GVXpaMEZ2TldjbWNHbzlORGczTXpneE5qWXkmcz1jb25zdW1lcnNlY3JldCZ4PWY1";
-static const NSString *oauth_consumer_secret = @"dc6e6814dd61bf29bc70b8d6da05efade8941ed9";
-
-static const NSString *oauthLogin = @"asbloguser2@yahoo.com";
-static const NSString *oauthPasswd = @"test123";
+// Need to update the value
+static const NSString *oauth_consumer_key = @"oauth_consumer_secret";
+static const NSString *oauth_consumer_secret = @"oauth_consumer_secret";
+static const NSString *oauthLogin = @"YAHOOEMAIL";
+static const NSString *oauthPasswd = @"PASSWD";
 
 static const NSString *urlGetAuthToken = @"https://login.yahoo.com/WSLogin/V1/get_auth_token";
 static const NSString *urlGetToken = @"https://api.login.yahoo.com/oauth/v2/get_token";
